@@ -29,13 +29,14 @@ namespace Eco.Mods.TechTree
         public virtual Type RepresentedItemType { get { return typeof(SmogCapItem); } }
         [Serialized] int fails = 0;
         [Serialized] int clock = 0;
-        [Serialized] bool once = false;
+        [Serialized] int once = 0;
         protected override void Initialize()
         {
             this.GetComponent<MinimapComponent>().SetCategory(Localizer.DoStr("Crafting"));
             this.GetComponent<LiquidConsumerComponent>().Setup(typeof(SmogItem), 1f, this.GetOccupancyType(BlockOccupancyType.InputPort), 0.3f);
             this.GetComponent<LiquidProducerComponent>().Setup(typeof(SmogItem), 0.3f, this.GetOccupancyType(BlockOccupancyType.ChimneyOut));
             this.GetOrCreateComponent<AirPollutionComponent>().Initialize(0.3f);
+            once = 0;
         }
         static SmogCapObject()
         {
@@ -51,16 +52,16 @@ namespace Eco.Mods.TechTree
         public override void Tick()
         {
             base.Tick();
-            if (!once)
+            once += 1;
+            if (once <= 10)
             {
                 this.GetComponent<OnOffComponent>().SetOnOff(null, true);
-                once = true;
             }
             if (this.GetComponent<CraftingComponent>().ActiveWorkOrder != null && !this.GetComponent<OnOffComponent>().On)
             {
                 this.GetComponent<OnOffComponent>().SetOnOff(null, true);
             }
-            if (this.GetComponent<OnOffComponent>().On)
+            if (this.GetComponent<OnOffComponent>().On && once > 10)
             {
                 if (this.GetComponent<LiquidProducerComponent>().OutputPipe.AverageFlow.Quantity/1000f <= 0.2f && this.GetComponent<CraftingComponent>().Operating == true)
                 {
@@ -83,7 +84,6 @@ namespace Eco.Mods.TechTree
                         this.GetOrCreateComponent<AirPollutionComponent>().Destroy();
                         this.GetOrCreateComponent<AirPollutionComponent>().Initialize((this.GetComponent<LiquidProducerComponent>().OutputPipe.AverageFlow.Quantity / 1000f - this.GetComponent<LiquidConsumerComponent>().InputPipe.AverageFlow.Quantity / 1000f)*3);
                         clock = 0;
-                        Console.Out.WriteLine(this.GetComponent<LiquidProducerComponent>().OutputPipe.AverageFlow.Quantity/1000f);
                     }
                     fails = 0;
                 }
