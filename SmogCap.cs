@@ -1,41 +1,18 @@
-﻿namespace Eco.Mods.TechTree
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using Eco.Gameplay.Blocks;
-    using Eco.Gameplay.Components;
-    using Eco.Gameplay.DynamicValues;
-    using Eco.Gameplay.Items;
-    using Eco.Gameplay.Objects;
-    using Eco.Gameplay.Players;
-    using Eco.Gameplay.Skills;
-    using Eco.Gameplay.Systems;
-    using Eco.Gameplay.Systems.TextLinks;
-    using Eco.Shared.Localization;
-    using Eco.Shared.Serialization;
-    using Eco.Shared.Utils;
-    using Eco.Core.Items;
-    using Eco.World;
-    using Eco.World.Blocks;
-    using Eco.Gameplay.Pipes;
-    using Eco.Gameplay.GameActions;
-    using System.Runtime.Serialization;
-    using Eco.Gameplay.Pipes.LiquidComponents;
-    using System.IO.Pipes;
-    using Eco.Shared.Math;
-    using Eco.WebServer.Web.Controllers;
-    using Eco.Core.Controller;
-    using Eco.Gameplay.Components.Auth;
-    using Eco.Gameplay.Pipes.Gases;
-    using Eco.Core.Properties;
-    using System.Security.AccessControl;
-    using Eco.Gameplay.Property;
-    using System.ComponentModel.DataAnnotations;
-    using Eco.Simulation.WorldLayers.Pullers;
-    using Eco.Simulation.WorldLayers;
-    using Eco.Mods.WorldLayers;
+﻿using Eco.Gameplay.Components;
+using Eco.Gameplay.Items;
+using Eco.Gameplay.Objects;
+using Eco.Gameplay.Skills;
+using Eco.Shared.Localization;
+using Eco.Shared.Serialization;
+using Eco.Core.Items;
+using Eco.World.Blocks;
+using Eco.Gameplay.Pipes.LiquidComponents;
+using Eco.Shared.Math;
+using Eco.Gameplay.Components.Auth;
+using Eco.Gameplay.Pipes.Gases;
 
+namespace Eco.Mods.TechTree
+{
     [Serialized]
     [Constructed]
     [RequireComponent(typeof(AirPollutionComponent))]
@@ -126,7 +103,7 @@
     {
         public override LocString DisplayDescription => Localizer.DoStr("Used filters to remove impurities from smog. NOTE: some particals are too small to remove");
     }
-    [Serialized]
+
     public partial class WeakSmogRecipe : RecipeFamily
     {
         public WeakSmogRecipe()
@@ -148,7 +125,7 @@
         partial void ModsPreInitialize();
         partial void ModsPostInitialize();
     }
-    [Serialized]
+
     [RequiresSkill(typeof(MechanicsSkill), 3)]
     public partial class SmogCapRecipe : RecipeFamily
     {
